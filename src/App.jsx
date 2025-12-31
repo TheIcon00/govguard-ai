@@ -22,7 +22,8 @@ import {
   Upload,
   X,
   Loader2,
-  Sparkles
+  Sparkles,
+  Menu
 } from 'lucide-react';
 import { 
   XAxis, 
@@ -95,7 +96,7 @@ const Badge = ({ children, color = 'violet' }) => {
     gray: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
   };
   return (
-    <span className={`px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-black border ${colors[color]}`}>
+    <span className={`px-2 py-0.5 rounded-md text-[9px] uppercase tracking-wider font-black border whitespace-nowrap ${colors[color]}`}>
       {children}
     </span>
   );
@@ -104,12 +105,12 @@ const Badge = ({ children, color = 'violet' }) => {
 const Card = ({ title, children, className = '', action }) => (
   <div className={`bg-slate-900/50 backdrop-blur-md rounded-2xl border border-white/5 shadow-2xl overflow-hidden transition-all duration-300 hover:border-white/10 ${className}`}>
     {title && (
-      <div className="px-6 py-5 border-b border-white/5 flex justify-between items-center bg-white/5">
-        <h3 className="font-black text-slate-200 tracking-tight text-xs uppercase">{title}</h3>
+      <div className="px-4 md:px-6 py-4 md:py-5 border-b border-white/5 flex justify-between items-center bg-white/5">
+        <h3 className="font-black text-slate-200 tracking-tight text-[10px] md:text-xs uppercase">{title}</h3>
         {action}
       </div>
     )}
-    <div className="p-6">{children}</div>
+    <div className="p-4 md:p-6">{children}</div>
   </div>
 );
 
@@ -123,6 +124,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [history, setHistory] = useState([]);
   const [toast, setToast] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -210,7 +212,7 @@ export default function App() {
   // --- SUB-PAGES ---
   const SidebarItem = ({ id, icon: Icon, label }) => (
     <button
-      onClick={() => { setActiveTab(id); setSelectedCase(null); }}
+      onClick={() => { setActiveTab(id); setSelectedCase(null); setIsSidebarOpen(false); }}
       className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl transition-all duration-300 relative group ${
         activeTab === id 
         ? 'text-white' 
@@ -227,18 +229,18 @@ export default function App() {
 
   const DashboardView = () => (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         <Card className="border-none bg-gradient-to-br from-rose-600 to-rose-900 text-white">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Anomalies Detected</p>
-              <h4 className="text-4xl font-black mt-2 tracking-tighter">{stats.highRisk}</h4>
+              <h4 className="text-3xl md:text-4xl font-black mt-2 tracking-tighter">{stats.highRisk}</h4>
             </div>
             <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
-              <ShieldAlert size={28} />
+              <ShieldAlert size={24} />
             </div>
           </div>
-          <div className="mt-8 flex items-center text-xs font-black uppercase tracking-widest gap-2">
+          <div className="mt-8 flex items-center text-[10px] md:text-xs font-black uppercase tracking-widest gap-2">
             <TrendingUp size={16} />
             <span className="opacity-80">Requires Urgent Scrutiny</span>
           </div>
@@ -248,13 +250,13 @@ export default function App() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">System Exposure</p>
-              <h4 className="text-4xl font-black mt-2 tracking-tighter">{stats.moneyAtRisk}</h4>
+              <h4 className="text-3xl md:text-4xl font-black mt-2 tracking-tighter">{stats.moneyAtRisk}</h4>
             </div>
             <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
-              <TrendingUp size={28} />
+              <TrendingUp size={24} />
             </div>
           </div>
-          <div className="mt-8 flex items-center text-xs font-black uppercase tracking-widest gap-2">
+          <div className="mt-8 flex items-center text-[10px] md:text-xs font-black uppercase tracking-widest gap-2">
             <Sparkles size={16} />
             <span className="opacity-80">Target Recovery Phase</span>
           </div>
@@ -264,13 +266,13 @@ export default function App() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Model Error Rate</p>
-              <h4 className="text-4xl font-black mt-2 tracking-tighter">{stats.falsePositiveRate}</h4>
+              <h4 className="text-3xl md:text-4xl font-black mt-2 tracking-tighter">{stats.falsePositiveRate}</h4>
             </div>
             <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-400">
-              <BrainCircuit size={28} />
+              <BrainCircuit size={24} />
             </div>
           </div>
-          <div className="mt-8 flex items-center text-xs font-black uppercase tracking-widest text-emerald-400 gap-2">
+          <div className="mt-8 flex items-center text-[10px] md:text-xs font-black uppercase tracking-widest text-emerald-400 gap-2">
             <CheckCircle2 size={16} />
             <span>Optimization Active</span>
           </div>
@@ -279,7 +281,7 @@ export default function App() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card title="Heuristic Velocity" className="lg:col-span-2">
-          <div className="h-[320px]">
+          <div className="h-[250px] md:h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={[
                 { name: '01/12', risk: 40 }, { name: '05/12', risk: 30 },
@@ -306,7 +308,7 @@ export default function App() {
         </Card>
 
         <Card title="Detection Density">
-          <div className="h-[320px] flex items-center justify-center">
+          <div className="h-[250px] md:h-[320px] flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -316,8 +318,8 @@ export default function App() {
                     { name: 'Works', value: 300 },
                     { name: 'Contracts', value: 200 },
                   ]}
-                  innerRadius={70}
-                  outerRadius={100}
+                  innerRadius={60}
+                  outerRadius={80}
                   paddingAngle={10}
                   dataKey="value"
                   stroke="none"
@@ -330,7 +332,7 @@ export default function App() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="grid grid-cols-2 gap-4 mt-2">
+          <div className="grid grid-cols-2 gap-2 md:gap-4 mt-2">
             <div className="flex items-center gap-2 text-slate-400 font-bold text-[9px] uppercase tracking-tighter">
               <div className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.5)]"></div>
               <span>Scholarship</span>
@@ -343,41 +345,43 @@ export default function App() {
         </Card>
       </div>
 
-      <Card title="Critical Anomalies" action={<button onClick={() => setActiveTab('queue')} className="text-violet-400 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors">Access All Logs</button>}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="text-slate-600 text-[10px] font-black uppercase tracking-[0.2em]">
-              <tr>
-                <th className="pb-4 px-2">Identification</th>
-                <th className="pb-4 px-2">Program</th>
-                <th className="pb-4 px-2 text-center">Threat Lvl</th>
-                <th className="pb-4 px-2 text-right">Magnitude</th>
-                <th className="pb-4 px-2"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5 text-sm">
-              {cases.slice(0, 5).sort((a,b) => b.riskScore - a.riskScore).map((c) => (
-                <tr key={c.id} className="group hover:bg-white/5 transition-all cursor-pointer" onClick={() => setSelectedCase(c)}>
-                  <td className="py-5 px-2">
-                    <div className="font-black text-slate-200 tracking-tight">{c.entityName}</div>
-                    <div className="text-[10px] font-mono text-slate-500 uppercase tracking-tighter">{c.id}</div>
-                  </td>
-                  <td className="py-5 px-2"><Badge color="violet">{c.program}</Badge></td>
-                  <td className="py-5 px-2 text-center">
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl font-black text-xs bg-slate-800 text-white border border-white/5">
-                      {c.riskScore}
-                    </div>
-                  </td>
-                  <td className="py-5 px-2 text-right font-black text-slate-300">₹{c.amount.toLocaleString()}</td>
-                  <td className="py-5 px-2 text-right">
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all text-slate-400 group-hover:bg-violet-600 group-hover:text-white">
-                      <ChevronRight size={14} />
-                    </div>
-                  </td>
+      <Card title="Critical Anomalies" action={<button onClick={() => setActiveTab('queue')} className="text-violet-400 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors">All Logs</button>}>
+        <div className="overflow-x-auto -mx-4 md:mx-0">
+          <div className="min-w-[600px] px-4 md:px-0">
+            <table className="w-full text-left">
+              <thead className="text-slate-600 text-[10px] font-black uppercase tracking-[0.2em]">
+                <tr>
+                  <th className="pb-4 px-2">Identification</th>
+                  <th className="pb-4 px-2">Program</th>
+                  <th className="pb-4 px-2 text-center">Threat Lvl</th>
+                  <th className="pb-4 px-2 text-right">Magnitude</th>
+                  <th className="pb-4 px-2"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-sm">
+                {cases.slice(0, 5).sort((a,b) => b.riskScore - a.riskScore).map((c) => (
+                  <tr key={c.id} className="group hover:bg-white/5 transition-all cursor-pointer" onClick={() => setSelectedCase(c)}>
+                    <td className="py-4 px-2">
+                      <div className="font-black text-slate-200 tracking-tight">{c.entityName}</div>
+                      <div className="text-[10px] font-mono text-slate-500 uppercase tracking-tighter">{c.id}</div>
+                    </td>
+                    <td className="py-4 px-2"><Badge color="violet">{c.program}</Badge></td>
+                    <td className="py-4 px-2 text-center">
+                      <div className="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-xl font-black text-xs bg-slate-800 text-white border border-white/5">
+                        {c.riskScore}
+                      </div>
+                    </td>
+                    <td className="py-4 px-2 text-right font-black text-slate-300">₹{c.amount.toLocaleString()}</td>
+                    <td className="py-4 px-2 text-right">
+                      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all text-slate-400 group-hover:bg-violet-600 group-hover:text-white">
+                        <ChevronRight size={14} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </Card>
     </div>
@@ -385,19 +389,19 @@ export default function App() {
 
   const QueueView = () => (
     <div className="space-y-6 animate-in fade-in duration-300">
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center bg-slate-900/50 backdrop-blur-md p-6 rounded-3xl border border-white/5 shadow-2xl">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center bg-slate-900/50 backdrop-blur-md p-4 md:p-6 rounded-3xl border border-white/5 shadow-2xl">
         <div className="relative w-full md:w-[450px]">
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-600" size={18} />
           <input 
             type="text" 
             placeholder="Search Global Threat Database..." 
-            className="w-full pl-14 pr-6 py-4 bg-slate-950 border border-white/5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500/30 transition-all font-bold text-slate-200 text-sm"
+            className="w-full pl-14 pr-6 py-3 md:py-4 bg-slate-950 border border-white/5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500/30 transition-all font-bold text-slate-200 text-sm"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="flex gap-4 w-full md:w-auto">
-          <button className="flex items-center gap-2 px-6 py-4 bg-white/5 rounded-2xl text-slate-300 font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5">
+          <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 md:py-4 bg-white/5 rounded-2xl text-slate-300 font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all border border-white/5">
             <Filter size={16} />
             <span>Parameters</span>
           </button>
@@ -406,96 +410,114 @@ export default function App() {
 
       <Card className="p-0 bg-transparent border-none">
         <div className="overflow-x-auto rounded-3xl border border-white/5 overflow-hidden shadow-2xl">
-          <table className="w-full text-left border-collapse bg-slate-900/40">
-            <thead className="bg-slate-950 text-slate-600 text-[10px] font-black uppercase tracking-[0.2em]">
-              <tr>
-                <th className="py-6 px-10">Entity Identification</th>
-                <th className="py-6 px-4">Domain</th>
-                <th className="py-6 px-4">Threat</th>
-                <th className="py-6 px-4">Pattern</th>
-                <th className="py-6 px-4 text-center">Status</th>
-                <th className="py-6 px-10 text-right">Protocol</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {filteredCases.map((c) => (
-                <tr key={c.id} className="hover:bg-white/5 transition-colors cursor-pointer" onClick={() => setSelectedCase(c)}>
-                  <td className="py-6 px-10">
-                    <div className="font-black text-slate-200 tracking-tight text-base">{c.entityName}</div>
-                    <div className="text-[10px] text-slate-500 font-mono tracking-widest uppercase">{c.id}</div>
-                  </td>
-                  <td className="py-6 px-4">
-                    <span className="text-xs font-black text-slate-400">{c.program}</span>
-                  </td>
-                  <td className="py-6 px-4">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-1 w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-1000 ${
-                            c.riskScore > 75 ? 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]' : 
-                            c.riskScore > 40 ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 
-                            'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'
-                          }`}
-                          style={{ width: `${c.riskScore}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-xs font-black text-white">{c.riskScore}</span>
-                    </div>
-                  </td>
-                  <td className="py-6 px-4">
-                    <div className="flex gap-2">
-                      {c.riskBreakdown.rules > 10 && <Badge color="violet">Rules</Badge>}
-                      {c.riskBreakdown.ml > 10 && <Badge color="green">ML</Badge>}
-                    </div>
-                  </td>
-                  <td className="py-6 px-4 text-center">
-                    <Badge color={
-                      c.status === 'Confirmed Fraud' ? 'red' :
-                      c.status === 'Legitimate' ? 'green' :
-                      c.status === 'Escalated' ? 'orange' : 'gray'
-                    }>
-                      {c.status}
-                    </Badge>
-                  </td>
-                  <td className="py-6 px-10 text-right">
-                    <div className="w-10 h-10 flex items-center justify-center bg-white/5 text-slate-400 rounded-xl hover:bg-violet-600 hover:text-white transition-all ml-auto">
-                      <ChevronRight size={20} />
-                    </div>
-                  </td>
+          <div className="min-w-[900px]">
+            <table className="w-full text-left border-collapse bg-slate-900/40">
+              <thead className="bg-slate-950 text-slate-600 text-[10px] font-black uppercase tracking-[0.2em]">
+                <tr>
+                  <th className="py-6 px-10">Entity Identification</th>
+                  <th className="py-6 px-4">Domain</th>
+                  <th className="py-6 px-4">Threat</th>
+                  <th className="py-6 px-4">Pattern</th>
+                  <th className="py-6 px-4 text-center">Status</th>
+                  <th className="py-6 px-10 text-right">Protocol</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filteredCases.map((c) => (
+                  <tr key={c.id} className="hover:bg-white/5 transition-colors cursor-pointer" onClick={() => setSelectedCase(c)}>
+                    <td className="py-6 px-10">
+                      <div className="font-black text-slate-200 tracking-tight text-base">{c.entityName}</div>
+                      <div className="text-[10px] text-slate-500 font-mono tracking-widest uppercase">{c.id}</div>
+                    </td>
+                    <td className="py-6 px-4">
+                      <span className="text-xs font-black text-slate-400">{c.program}</span>
+                    </td>
+                    <td className="py-6 px-4">
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1 w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full transition-all duration-1000 ${
+                              c.riskScore > 75 ? 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]' : 
+                              c.riskScore > 40 ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 
+                              'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]'
+                            }`}
+                            style={{ width: `${c.riskScore}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-xs font-black text-white">{c.riskScore}</span>
+                      </div>
+                    </td>
+                    <td className="py-6 px-4">
+                      <div className="flex gap-2">
+                        {c.riskBreakdown.rules > 10 && <Badge color="violet">Rules</Badge>}
+                        {c.riskBreakdown.ml > 10 && <Badge color="green">ML</Badge>}
+                      </div>
+                    </td>
+                    <td className="py-6 px-4 text-center">
+                      <Badge color={
+                        c.status === 'Confirmed Fraud' ? 'red' :
+                        c.status === 'Legitimate' ? 'green' :
+                        c.status === 'Escalated' ? 'orange' : 'gray'
+                      }>
+                        {c.status}
+                      </Badge>
+                    </td>
+                    <td className="py-6 px-10 text-right">
+                      <div className="w-10 h-10 flex items-center justify-center bg-white/5 text-slate-400 rounded-xl hover:bg-violet-600 hover:text-white transition-all ml-auto">
+                        <ChevronRight size={20} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </Card>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 flex font-sans selection:bg-violet-500/30">
+    <div className="min-h-screen bg-[#020617] text-slate-100 flex font-sans selection:bg-violet-500/30 overflow-x-hidden">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] animate-in fade-in slide-in-from-top-4">
-          <div className={`px-6 py-4 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-4 ${
+        <div className="fixed top-20 md:top-8 left-1/2 -translate-x-1/2 z-[100] animate-in fade-in slide-in-from-top-4 w-[90%] md:w-auto">
+          <div className={`px-4 md:px-6 py-3 md:py-4 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center justify-center gap-4 ${
             toast.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-violet-500/10 border-violet-500/20 text-violet-400'
           }`}>
             <Sparkles size={18} />
-            <span className="font-black text-xs uppercase tracking-widest">{toast.message}</span>
+            <span className="font-black text-[10px] md:text-xs uppercase tracking-widest text-center">{toast.message}</span>
           </div>
         </div>
       )}
 
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-72 bg-slate-950/50 backdrop-blur-xl border-r border-white/5 flex flex-col fixed h-full z-20">
+      <aside className={`
+        fixed inset-y-0 left-0 w-72 bg-slate-950/95 backdrop-blur-xl border-r border-white/5 flex flex-col z-40 transition-transform duration-300 lg:translate-x-0
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
         <div className="p-8">
-          <div className="flex items-center gap-4 mb-16 group cursor-pointer">
-            <div className="p-3 bg-violet-600 text-white rounded-2xl shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-transform duration-500 group-hover:scale-110">
-              <ShieldAlert size={28} />
+          <div className="flex items-center justify-between mb-16">
+            <div className="flex items-center gap-4 group cursor-pointer">
+              <div className="p-3 bg-violet-600 text-white rounded-2xl shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-transform duration-500 group-hover:scale-110">
+                <ShieldAlert size={28} />
+              </div>
+              <div>
+                <h1 className="font-black text-xl tracking-tighter text-white uppercase leading-none">Vigilant<span className="text-violet-500">AI</span></h1>
+                <p className="text-[9px] font-black tracking-[0.4em] text-slate-600 uppercase mt-1">Audit Shield</p>
+              </div>
             </div>
-            <div>
-              <h1 className="font-black text-xl tracking-tighter text-white uppercase leading-none">Vigilant<span className="text-violet-500">AI</span></h1>
-              <p className="text-[9px] font-black tracking-[0.4em] text-slate-600 uppercase mt-1">Audit Shield</p>
-            </div>
+            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-slate-500 hover:text-white transition-colors">
+              <X size={24} />
+            </button>
           </div>
 
           <nav className="space-y-3">
@@ -507,12 +529,12 @@ export default function App() {
         </div>
 
         <div className="mt-auto p-8">
-          <div className="p-6 bg-slate-900 rounded-3xl border border-white/10 flex items-center gap-4 transition-all hover:border-violet-500/30">
-            <div className="w-12 h-12 rounded-xl border border-violet-500/30 overflow-hidden bg-slate-800 p-1">
+          <div className="p-4 md:p-6 bg-slate-900 rounded-3xl border border-white/10 flex items-center gap-4 transition-all hover:border-violet-500/30">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl border border-violet-500/30 overflow-hidden bg-slate-800 p-1 flex-shrink-0">
               <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" className="rounded-lg" alt="avatar" />
             </div>
-            <div className="flex-1">
-              <p className="text-sm font-black text-white tracking-tight">Cpt. Arjun</p>
+            <div className="flex-1 overflow-hidden">
+              <p className="text-sm font-black text-white tracking-tight truncate">Cpt. Arjun</p>
               <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">L3 Specialist</p>
             </div>
           </div>
@@ -520,31 +542,39 @@ export default function App() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 ml-72 p-12 relative overflow-y-auto">
-        <header className="flex justify-between items-end mb-16">
-          <div>
-            <h2 className="text-5xl font-black text-white tracking-tighter capitalize mb-3">
-              {activeTab} <span className="text-violet-600">.</span>
-            </h2>
+      <main className="flex-1 lg:ml-72 p-4 md:p-8 lg:p-12 relative overflow-y-auto">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6">
+          <div className="w-full md:w-auto">
+            <div className="flex items-center justify-between md:justify-start gap-4 mb-3">
+              <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter capitalize">
+                {activeTab} <span className="text-violet-600">.</span>
+              </h2>
+              <button 
+                onClick={() => setIsSidebarOpen(true)}
+                className="lg:hidden p-3 bg-slate-900 border border-white/5 rounded-2xl text-slate-400 hover:text-white"
+              >
+                <Menu size={24} />
+              </button>
+            </div>
             <div className="flex items-center gap-4 text-slate-500 font-black text-[10px] uppercase tracking-[0.3em]">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></span>
-                <span>Node: Secure-Alpha</span>
+                <span>Secure-Alpha</span>
               </div>
               <span className="w-px h-3 bg-slate-800"></span>
               <div className="flex items-center gap-2">
                 <Clock size={12} />
-                <span>Last Sync: 10:42:01</span>
+                <span>10:42:01</span>
               </div>
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
             <input type="file" accept=".csv" className="hidden" ref={fileInputRef} onChange={handleFileUpload} />
             <button 
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="px-6 py-4 bg-slate-900 border border-white/5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-slate-300 hover:text-white hover:border-violet-500/50 transition-all flex items-center gap-3 shadow-2xl"
+              className="flex-1 md:flex-none px-4 md:px-6 py-3 md:py-4 bg-slate-900 border border-white/5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-slate-300 hover:text-white hover:border-violet-500/50 transition-all flex items-center justify-center gap-2 md:gap-3 shadow-2xl whitespace-nowrap"
             >
               {isUploading ? <Loader2 size={16} className="animate-spin text-violet-500" /> : <Upload size={16} className="text-violet-500" />}
               <span>{isUploading ? 'Parsing' : 'Ingest'}</span>
@@ -553,7 +583,7 @@ export default function App() {
             <button 
               onClick={runNewScan}
               disabled={isScanning}
-              className={`px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center gap-3 ${
+              className={`flex-1 md:flex-none px-6 md:px-8 py-3 md:py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 md:gap-3 whitespace-nowrap ${
                 isScanning 
                 ? 'bg-slate-800 text-slate-600' 
                 : 'bg-violet-600 text-white shadow-[0_10px_30px_rgba(139,92,246,0.3)] hover:bg-violet-700 hover:-translate-y-1'
@@ -568,34 +598,34 @@ export default function App() {
         {activeTab === 'dashboard' && <DashboardView />}
         {activeTab === 'queue' && <QueueView />}
         {activeTab === 'rules' && (
-          <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="space-y-4 md:space-y-6 animate-in fade-in duration-300">
             {MOCK_RULES.map(rule => (
-              <Card key={rule.id} className="p-0 bg-slate-900/50 border-white/5">
-                <div className="p-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-                  <div className="flex gap-8 items-start">
-                    <div className={`p-6 rounded-3xl ${rule.active ? 'bg-violet-600 shadow-[0_0_30px_rgba(139,92,246,0.4)] text-white' : 'bg-slate-800 text-slate-600'}`}>
-                      <Database size={32} />
+              <Card key={rule.id} className="p-0 bg-slate-900/50 border-white/5 overflow-hidden">
+                <div className="p-6 md:p-10 flex flex-col xl:flex-row xl:items-center justify-between gap-8 md:gap-10">
+                  <div className="flex flex-col sm:flex-row gap-4 md:gap-8 items-start">
+                    <div className={`p-4 md:p-6 rounded-3xl shrink-0 ${rule.active ? 'bg-violet-600 shadow-[0_0_30px_rgba(139,92,246,0.4)] text-white' : 'bg-slate-800 text-slate-600'}`}>
+                      <Database size={24} />
                     </div>
                     <div>
-                      <div className="flex items-center gap-4">
-                        <h4 className="font-black text-white text-2xl tracking-tight">{rule.name}</h4>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <h4 className="font-black text-white text-lg md:text-2xl tracking-tight">{rule.name}</h4>
                         <Badge color={rule.active ? 'green' : 'gray'}>{rule.active ? 'Operational' : 'Idle'}</Badge>
                       </div>
-                      <p className="text-slate-500 font-bold text-sm mt-2 max-w-xl">{rule.description}</p>
+                      <p className="text-slate-500 font-bold text-xs md:text-sm mt-2 max-w-xl">{rule.description}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-16 border-t lg:border-none border-white/5 pt-8 lg:pt-0">
+                  <div className="flex flex-wrap items-center gap-8 md:gap-16 border-t xl:border-none border-white/5 pt-6 xl:pt-0 justify-between sm:justify-start">
                     <div className="text-center">
-                      <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest mb-1">Impact</p>
-                      <p className="text-3xl font-black text-white">+{rule.points}</p>
+                      <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1">Impact</p>
+                      <p className="text-2xl md:text-3xl font-black text-white">+{rule.points}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest mb-1">Accuracy</p>
-                      <p className={`text-3xl font-black ${rule.accuracy > 80 ? 'text-emerald-500' : 'text-amber-500'}`}>{rule.accuracy}%</p>
+                      <p className="text-[9px] text-slate-600 font-black uppercase tracking-widest mb-1">Accuracy</p>
+                      <p className={`text-2xl md:text-3xl font-black ${rule.accuracy > 80 ? 'text-emerald-500' : 'text-amber-500'}`}>{rule.accuracy}%</p>
                     </div>
-                    <div className="flex items-center gap-6 border-l pl-16 border-white/5">
-                      <div className="w-16 h-9 bg-slate-950 rounded-full relative p-1.5 cursor-pointer shadow-inner">
-                        <div className={`w-6 h-6 rounded-full shadow-lg transition-all transform ${rule.active ? 'translate-x-7 bg-violet-600' : 'bg-slate-700'}`}></div>
+                    <div className="flex items-center gap-6 border-l pl-8 md:pl-16 border-white/5">
+                      <div className="w-14 h-8 md:w-16 md:h-9 bg-slate-950 rounded-full relative p-1.5 cursor-pointer shadow-inner">
+                        <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full shadow-lg transition-all transform ${rule.active ? 'translate-x-6 md:translate-x-7 bg-violet-600' : 'bg-slate-700'}`}></div>
                       </div>
                     </div>
                   </div>
@@ -605,20 +635,20 @@ export default function App() {
           </div>
         )}
         {activeTab === 'feedback' && (
-          <div className="space-y-8 animate-in fade-in duration-300">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="space-y-6 md:space-y-8 animate-in fade-in duration-300">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
               <Card title="Decision History" className="lg:col-span-1 border-none bg-slate-900 shadow-2xl">
-                <div className="py-12 flex flex-col items-center">
-                  <div className="w-48 h-48 rounded-full border-[12px] border-violet-500/10 border-t-violet-500 flex items-center justify-center relative shadow-[0_0_40px_rgba(139,92,246,0.1)]">
+                <div className="py-8 md:py-12 flex flex-col items-center">
+                  <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-[10px] md:border-[12px] border-violet-500/10 border-t-violet-500 flex items-center justify-center relative shadow-[0_0_40px_rgba(139,92,246,0.1)]">
                     <div className="text-center">
-                      <span className="text-6xl font-black text-white tracking-tighter leading-none">{history.length}</span>
+                      <span className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none">{history.length}</span>
                       <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-2">Actions</p>
                     </div>
                   </div>
                 </div>
               </Card>
               <Card title="Intelligence Evolution" className="lg:col-span-2 border-none bg-slate-900 shadow-2xl">
-                <div className="h-[280px] mb-8">
+                <div className="h-[220px] md:h-[280px] mb-4">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={[
                       { month: 'JAN', acc: 60 }, { month: 'FEB', acc: 68 },
@@ -629,7 +659,7 @@ export default function App() {
                       <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 900, fill: '#475569'}} />
                       <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 900, fill: '#475569'}} />
                       <Tooltip contentStyle={{backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', color: '#fff'}} />
-                      <Line type="monotone" dataKey="acc" stroke="#8b5cf6" strokeWidth={8} dot={{r: 10, fill: '#8b5cf6', stroke: '#0f172a', strokeWidth: 4}} activeDot={{r: 12}} />
+                      <Line type="monotone" dataKey="acc" stroke="#8b5cf6" strokeWidth={6} dot={{r: 8, fill: '#8b5cf6', stroke: '#0f172a', strokeWidth: 4}} activeDot={{r: 10}} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -637,23 +667,27 @@ export default function App() {
             </div>
             
             <Card title="Execution Log" className="bg-slate-900/40">
-              <div className="divide-y divide-white/5">
-                {history.map((log) => (
-                  <div key={log.id} className="py-6 flex items-center justify-between group">
-                    <div className="flex items-center gap-8">
-                      <div className={`p-4 rounded-2xl ${
-                        log.status === 'Confirmed Fraud' ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'
-                      }`}>
-                        {log.status === 'Confirmed Fraud' ? <XCircle size={28} /> : <CheckCircle2 size={28} />}
+              <div className="divide-y divide-white/5 -mx-4 md:mx-0">
+                {history.length === 0 ? (
+                  <div className="py-12 text-center text-slate-500 font-bold uppercase text-[10px] tracking-widest">No operations recorded</div>
+                ) : (
+                  history.map((log) => (
+                    <div key={log.id} className="py-4 md:py-6 px-4 md:px-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group">
+                      <div className="flex items-center gap-4 md:gap-8">
+                        <div className={`p-3 md:p-4 rounded-2xl shrink-0 ${
+                          log.status === 'Confirmed Fraud' ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'
+                        }`}>
+                          {log.status === 'Confirmed Fraud' ? <XCircle size={24} /> : <CheckCircle2 size={24} />}
+                        </div>
+                        <div>
+                          <p className="text-lg md:text-xl font-black text-slate-200 tracking-tight">Case {log.caseId}</p>
+                          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Resolution: {log.status}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xl font-black text-slate-200 tracking-tight">Case {log.caseId}</p>
-                        <p className="text-xs font-black text-slate-500 uppercase tracking-widest mt-1">Resolution: {log.status}</p>
-                      </div>
+                      <p className="text-[10px] font-black text-slate-600 font-mono tracking-tighter sm:text-right">{log.timestamp}</p>
                     </div>
-                    <p className="text-xs font-black text-slate-600 font-mono tracking-tighter">{log.timestamp}</p>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </Card>
           </div>
@@ -661,64 +695,65 @@ export default function App() {
 
         {/* Case Detail Modal */}
         {selectedCase && (
-          <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-50 flex items-center justify-center p-8">
-            <div className="bg-slate-900 w-full max-w-6xl rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col max-h-[95vh] animate-in zoom-in-95 duration-500 border border-white/10">
+          <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-xl z-[60] flex items-center justify-center p-4 md:p-8">
+            <div className="bg-slate-900 w-full max-w-6xl rounded-3xl md:rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col max-h-[95vh] animate-in zoom-in-95 duration-500 border border-white/10 relative">
+              
               {/* Header */}
-              <div className="bg-slate-950 px-14 py-12 flex justify-between items-center relative overflow-hidden border-b border-white/5">
-                <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px]"></div>
-                <div className="flex items-center gap-12 relative z-10">
-                  <div className="w-28 h-28 rounded-[32px] flex flex-col items-center justify-center bg-violet-600 text-white shadow-[0_0_40px_rgba(139,92,246,0.4)]">
-                    <span className="text-4xl font-black leading-none">{selectedCase.riskScore}</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest mt-1">Risk</span>
+              <div className="bg-slate-950 px-6 md:px-14 py-8 md:py-12 flex flex-col md:flex-row justify-between items-start md:items-center relative overflow-hidden border-b border-white/5 gap-6">
+                <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-12 relative z-10 w-full md:w-auto">
+                  <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl md:rounded-[32px] flex flex-col items-center justify-center bg-violet-600 text-white shadow-[0_0_40px_rgba(139,92,246,0.4)] shrink-0">
+                    <span className="text-2xl md:text-4xl font-black leading-none">{selectedCase.riskScore}</span>
+                    <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest mt-1">Risk</span>
                   </div>
                   <div>
-                    <div className="flex items-center gap-5 mb-3">
-                      <h2 className="text-5xl font-black text-white tracking-tighter">{selectedCase.entityName}</h2>
-                      <div className="px-4 py-1.5 bg-rose-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest animate-pulse">Critical</div>
+                    <div className="flex flex-wrap items-center gap-3 md:gap-5 mb-2 md:mb-3">
+                      <h2 className="text-2xl md:text-5xl font-black text-white tracking-tighter">{selectedCase.entityName}</h2>
+                      <div className="px-3 md:px-4 py-1 bg-rose-500 text-white rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-black uppercase tracking-widest animate-pulse">Critical</div>
                     </div>
-                    <div className="flex items-center gap-10 text-slate-500 text-[10px] font-black uppercase tracking-widest">
+                    <div className="flex flex-wrap items-center gap-4 md:gap-10 text-slate-500 text-[9px] md:text-[10px] font-black uppercase tracking-widest">
                       <span className="font-mono text-violet-400">{selectedCase.id}</span>
-                      <span className="flex items-center gap-2"><Clock size={12} /> Detected: {selectedCase.dateFlagged}</span>
-                      <span className="text-slate-300 font-bold">Amt: ₹{selectedCase.amount.toLocaleString()}</span>
+                      <span className="flex items-center gap-2"><Clock size={12} /> {selectedCase.dateFlagged}</span>
+                      <span className="text-slate-300 font-bold whitespace-nowrap">₹{selectedCase.amount.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
-                <button onClick={() => setSelectedCase(null)} className="p-5 bg-white/5 text-slate-400 hover:text-white hover:bg-rose-600 rounded-3xl transition-all">
-                  <X size={32} />
+                <button onClick={() => setSelectedCase(null)} className="absolute top-6 right-6 p-2 md:p-4 bg-white/5 text-slate-400 hover:text-white hover:bg-rose-600 rounded-xl md:rounded-3xl transition-all z-20">
+                  <X size={24} />
                 </button>
               </div>
 
               {/* Body */}
-              <div className="flex-1 overflow-y-auto p-14 bg-slate-900/50">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-14">
-                  <div className="lg:col-span-2 space-y-14">
+              <div className="flex-1 overflow-y-auto p-6 md:p-14 bg-slate-900/50">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-14">
+                  <div className="lg:col-span-2 space-y-10 md:space-y-14">
                     <section>
-                      <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.4em] mb-8 flex items-center gap-4">
-                        <AlertTriangle size={18} className="text-amber-500" />
+                      <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6 flex items-center gap-3">
+                        <AlertTriangle size={16} className="text-amber-500" />
                         Intelligence Summary
                       </h3>
-                      <div className="grid grid-cols-1 gap-6">
+                      <div className="grid grid-cols-1 gap-4 md:gap-6">
                         {selectedCase.reasons.map((reason, i) => (
-                          <div key={i} className="bg-slate-950 border border-white/5 p-8 rounded-[32px] flex items-center gap-8 transition-all hover:border-white/10">
-                            <div className="text-4xl font-black text-slate-800">0{i+1}</div>
-                            <p className="text-slate-300 font-bold text-lg leading-relaxed">{reason}</p>
+                          <div key={i} className="bg-slate-950 border border-white/5 p-5 md:p-8 rounded-2xl md:rounded-[32px] flex items-start md:items-center gap-4 md:gap-8 transition-all hover:border-white/10">
+                            <div className="text-2xl md:text-4xl font-black text-slate-800 shrink-0">0{i+1}</div>
+                            <p className="text-slate-300 font-bold text-sm md:text-lg leading-relaxed">{reason}</p>
                           </div>
                         ))}
                       </div>
                     </section>
 
                     <section>
-                      <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.4em] mb-8">Data Chain</h3>
-                      <div className="space-y-8 relative before:absolute before:left-5 before:top-4 before:bottom-4 before:w-0.5 before:bg-white/5">
+                      <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6 md:mb-8">Data Chain</h3>
+                      <div className="space-y-6 md:space-y-8 relative before:absolute before:left-5 before:top-4 before:bottom-4 before:w-0.5 before:bg-white/5">
                         {selectedCase.evidence.map((item, i) => (
-                          <div key={i} className="relative pl-16 group">
+                          <div key={i} className="relative pl-12 md:pl-16 group">
                             <div className="absolute left-2.5 top-1.5 w-5 h-5 bg-slate-900 border-[6px] border-violet-600 rounded-full group-hover:scale-125 transition-all"></div>
-                            <div className="bg-slate-950/50 p-8 rounded-[32px] border border-white/5 shadow-inner">
-                              <div className="flex justify-between items-center mb-3">
-                                <span className="text-lg font-black text-white tracking-tight">{item.description}</span>
-                                <span className="text-[10px] font-black text-slate-600 uppercase">{item.date}</span>
+                            <div className="bg-slate-950/50 p-6 md:p-8 rounded-2xl md:rounded-[32px] border border-white/5 shadow-inner">
+                              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 md:mb-3 gap-2">
+                                <span className="text-base md:text-lg font-black text-white tracking-tight">{item.description}</span>
+                                <span className="text-[9px] font-black text-slate-600 uppercase">{item.date}</span>
                               </div>
-                              <span className="px-3 py-1 bg-violet-600/10 text-violet-400 font-mono text-[10px] rounded-lg border border-violet-600/20 uppercase">Vector: {item.value}</span>
+                              <span className="inline-block px-3 py-1 bg-violet-600/10 text-violet-400 font-mono text-[9px] md:text-[10px] rounded-lg border border-violet-600/20 uppercase">Vector: {item.value}</span>
                             </div>
                           </div>
                         ))}
@@ -726,16 +761,16 @@ export default function App() {
                     </section>
                   </div>
 
-                  <div className="space-y-10">
+                  <div className="space-y-8 md:space-y-10">
                     <Card title="Factor Breakdown" className="bg-slate-950 border-white/5">
-                      <div className="space-y-10 py-6">
+                      <div className="space-y-8 md:space-y-10 py-2">
                         {Object.entries(selectedCase.riskBreakdown).map(([key, val]) => (
                           <div key={key}>
-                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest mb-4 text-slate-500">
+                            <div className="flex justify-between text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-3 md:mb-4 text-slate-500">
                               <span>{key} Analysis</span>
                               <span className="text-white">{val}%</span>
                             </div>
-                            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-1.5 md:h-2 bg-white/5 rounded-full overflow-hidden">
                               <div 
                                 className={`h-full rounded-full transition-all duration-1000 ${
                                   key === 'rules' ? 'bg-violet-600 shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 
@@ -750,9 +785,9 @@ export default function App() {
                       </div>
                     </Card>
 
-                    <div className="p-10 bg-gradient-to-br from-violet-600/20 to-transparent rounded-[40px] border border-violet-500/20">
-                      <h4 className="font-black text-white uppercase text-xs tracking-widest mb-4">Auditor Note</h4>
-                      <p className="text-slate-400 text-sm font-medium leading-relaxed italic">
+                    <div className="p-6 md:p-10 bg-gradient-to-br from-violet-600/20 to-transparent rounded-2xl md:rounded-[40px] border border-violet-500/20">
+                      <h4 className="font-black text-white uppercase text-[10px] tracking-widest mb-3 md:mb-4">Auditor Note</h4>
+                      <p className="text-slate-400 text-xs md:text-sm font-medium leading-relaxed italic">
                         "Initial pattern matching suggests a sophisticated account-sharing cluster. High correlation with previous VS-2024 escalations in the Scholarship sector."
                       </p>
                     </div>
@@ -761,24 +796,26 @@ export default function App() {
               </div>
 
               {/* Footer Actions */}
-              <div className="bg-slate-950 border-t border-white/5 px-14 py-10 flex flex-col md:flex-row gap-8 items-center justify-between">
-                <div className="flex items-center gap-8">
-                  <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-slate-600 border border-white/5"><Database size={28} /></div>
+              <div className="bg-slate-950 border-t border-white/5 px-6 md:px-14 py-8 md:py-10 flex flex-col xl:flex-row gap-8 items-center justify-between">
+                <div className="flex items-center gap-4 md:gap-8 w-full xl:w-auto">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-slate-600 border border-white/5 shrink-0">
+                    <Database size={24} />
+                  </div>
                   <div>
-                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Assigned Protocol</p>
-                    <p className="text-sm font-black text-white">Manual Verification <span className="text-violet-500">_Required</span></p>
+                    <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Assigned Protocol</p>
+                    <p className="text-xs md:text-sm font-black text-white whitespace-nowrap">Manual Verification <span className="text-violet-500">_Required</span></p>
                   </div>
                 </div>
-                <div className="flex gap-4 w-full md:w-auto">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full xl:w-auto">
                   <button 
                     onClick={() => handleAction(selectedCase.id, 'Legitimate')}
-                    className="flex-1 md:flex-none px-12 py-5 bg-white/5 text-slate-300 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all border border-white/5"
+                    className="flex-1 sm:flex-none px-8 md:px-12 py-4 md:py-5 bg-white/5 text-slate-300 rounded-2xl md:rounded-3xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all border border-white/5 whitespace-nowrap"
                   >
                     Reject Flag
                   </button>
                   <button 
                     onClick={() => handleAction(selectedCase.id, 'Confirmed Fraud')}
-                    className="flex-1 md:flex-none px-14 py-5 bg-rose-600 text-white rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-rose-700 shadow-[0_15px_40px_rgba(244,63,94,0.3)] transition-all transform hover:-translate-y-2 active:scale-95"
+                    className="flex-1 sm:flex-none px-10 md:px-14 py-4 md:py-5 bg-rose-600 text-white rounded-2xl md:rounded-3xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-rose-700 shadow-[0_15px_40px_rgba(244,63,94,0.3)] transition-all transform hover:-translate-y-1 active:scale-95 whitespace-nowrap"
                   >
                     Confirm Anomaly
                   </button>
