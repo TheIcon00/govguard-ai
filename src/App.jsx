@@ -362,7 +362,7 @@ export default function App() {
         <Card className="border-l-4 border-l-emerald-600">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Model Precision</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Model Error</p>
               <h4 className="text-3xl font-bold mt-1 text-slate-900">{displayStats.falsePositiveRate}</h4>
             </div>
             <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
